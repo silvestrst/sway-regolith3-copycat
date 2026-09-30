@@ -1,0 +1,11 @@
+###############################################################################
+# Notifications - swaync stands in for Regolith's rofication + ilia
+###############################################################################
+
+## Launch // Notification Viewer // <> n ##
+bindsym $mod+n exec --no-startup-id swaync-client --toggle-panel --skip-wait
+
+## Modify // Toggle Do Not Disturb // <><Shift> d ##
+bindsym $mod+Shift+d exec --no-startup-id swaync-client --toggle-dnd --skip-wait
+
+exec --no-startup-id swaync

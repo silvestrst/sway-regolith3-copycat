@@ -1,0 +1,26 @@
+#!/bin/bash
+# swaylock styled to match the Regolith "lascaille" look.
+# Regolith uses gtklock; swaylock is the archive equivalent.
+exec swaylock \
+    --image "$HOME/.local/share/backgrounds/lascaille/lockscreen.png" \
+    --scaling fill \
+    --indicator-radius 100 \
+    --indicator-thickness 10 \
+    --ring-color 77A8D9 \
+    --ring-clear-color FFD580 \
+    --ring-ver-color BAE67E \
+    --ring-wrong-color FF3333 \
+    --key-hl-color FFA759 \
+    --bs-hl-color FF3333 \
+    --inside-color 1F2430CC \
+    --inside-clear-color 1F2430CC \
+    --inside-ver-color 1F2430CC \
+    --inside-wrong-color 1F2430CC \
+    --separator-color 00000000 \
+    --text-color E6E1CF \
+    --text-clear-color E6E1CF \
+    --text-ver-color E6E1CF \
+    --text-wrong-color E6E1CF \
+    --font "Bitstream Vera Sans" \
+    --ignore-empty-password \
+    --show-failed-attempts

@@ -1,0 +1,53 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+[[ $BLOCK_BUTTON == 1 ]] && { setsid nm-connection-editor >/dev/null 2>&1 & }
+
+iface=$(ip -o route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}')
+if [[ -z ${iface:-} ]]; then
+    emit "$G_WIRED" "down" "$CRITICAL"
+    exit 0
+fi
+
+# Wireless interfaces have a wireless/ directory in sysfs
+if [[ -d /sys/class/net/$iface/wireless ]]; then
+    glyph=$G_WIFI
+    label=$(nmcli -t -f active,ssid dev wifi 2>/dev/null | awk -F: '$1=="yes"{print $2; exit}')
+    label=${label:-$iface}
+else
+    glyph=$G_WIRED
+    label=$iface
+fi
+
+# Throughput since the previous run
+state="${XDG_RUNTIME_DIR:-/tmp}/i3blocks-net-$iface"
+rx=$(< "/sys/class/net/$iface/statistics/rx_bytes")
+tx=$(< "/sys/class/net/$iface/statistics/tx_bytes")
+now=$(date +%s)
+# Rates are padded to a constant 6 columns ("   12K", " 1.5M") so the block
+# keeps the same width whatever the traffic is and the bar stops shifting.
+# Fields are joined with "|" because leading padding would be eaten by $IFS.
+rate=""
+if [[ -r $state ]]; then
+    read -r prx ptx pnow < "$state"
+    dt=$(( now - pnow ))
+    (( dt > 0 )) && rate=$(awk -v r=$(( rx - prx )) -v t=$(( tx - ptx )) -v d="$dt" \
+        'function h(b){ b=b/d; if(b>=1073741824) return sprintf("%5.1fG", b/1073741824);
+                        if(b>=1048576) return sprintf("%5.1fM", b/1048576);
+                        if(b>=1024) return sprintf("%5.0fK", b/1024); return sprintf("%5.0fB", b) }
+         BEGIN{ printf "%s|%s", h(r), h(t) }')
+fi
+echo "$rx $tx $now" > "$state"
+
+# No reading yet (first run, or two runs inside the same second): show padded
+# zeros rather than dropping the fields, which would shrink the block.
+[[ -z $rate ]] && rate="$(printf '%5dB|%5dB' 0 0)"
+
+if [[ -n $rate ]]; then
+    IFS="|" read -r down up <<< "$rate"
+    printf '<span color="%s">%s</span> <span color="%s">%s</span> <span color="%s">%s</span><span color="%s">%s</span> <span color="%s">%s</span><span color="%s">%s</span>\n' \
+        "$LABEL" "$glyph" "$VALUE" "$label" \
+        "$LABEL" "$G_DOWN" "$VALUE" "$down" \
+        "$LABEL" "$G_UP" "$VALUE" "$up"
+else
+    emit "$glyph" "$label"
+fi

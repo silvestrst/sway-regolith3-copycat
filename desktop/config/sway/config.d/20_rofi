@@ -1,0 +1,19 @@
+###############################################################################
+# Rofi - stands in for Regolith's "ilia" launcher
+###############################################################################
+
+## Launch // Application // <> Space ##
+bindsym $mod+space exec --no-startup-id rofi -show drun
+
+## Launch // Command // <><Shift> Space ##
+bindsym $mod+Shift+space exec --no-startup-id rofi -show run
+
+## Navigate // Window by Name // <><Ctrl> Space ##
+bindsym $mod+Ctrl+space exec --no-startup-id rofi -show window
+
+## Launch // File Search // <><Alt> Space ##
+bindsym $mod+$alt+space exec --no-startup-id rofi -show filebrowser
+
+## Launch // Keybinding Viewer // <><Shift> ? ##
+bindsym --to-code $mod+Shift+question exec --no-startup-id $bin/regolith-keybindings
+

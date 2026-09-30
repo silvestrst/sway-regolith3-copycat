@@ -1,0 +1,4 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+[[ $BLOCK_BUTTON == 1 ]] && { command -v gnome-calendar >/dev/null && setsid gnome-calendar >/dev/null 2>&1 & }
+emit "$G_CLOCK" "$(date '+%a %d %b %H:%M')"

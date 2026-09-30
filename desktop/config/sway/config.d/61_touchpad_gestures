@@ -1,0 +1,12 @@
+###############################################################################
+# Touchpad gestures
+###############################################################################
+bindgesture --exact swipe:3:right workspace prev_on_output
+bindgesture --exact swipe:3:left  workspace next_on_output
+bindgesture --exact swipe:3:up    exec rofi -show window
+bindgesture --exact swipe:3:down  exec rofi -show drun
+
+bindgesture --exact swipe:4:right move workspace to output right
+bindgesture --exact swipe:4:left  move workspace to output left
+bindgesture --exact swipe:4:up    move workspace to output up
+bindgesture --exact swipe:4:down  move workspace to output down

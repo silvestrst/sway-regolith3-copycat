@@ -1,0 +1,19 @@
+#!/bin/sh
+# Toggle the focused container between the stacking layout and the layout it
+# had before.  Sway remembers the previous split orientation itself -- "layout
+# toggle split" restores it when leaving stacking -- but the same command flips
+# splith/splitv when the container is already split, and sway config has no
+# conditionals.  So branch on the current layout here.
+set -eu
+
+layout=$(swaymsg -t get_tree | jq -r '
+    recurse(.nodes[]?)
+    | select(.nodes != null)
+    | select(any(.nodes[]; .focused == true))
+    | .layout' | head -n1)
+
+if [ "$layout" = "stacked" ]; then
+    swaymsg layout toggle split >/dev/null
+else
+    swaymsg layout stacking >/dev/null
+fi

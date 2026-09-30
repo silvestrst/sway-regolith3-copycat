@@ -1,0 +1,19 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+# Read straight from hwmon so lm-sensors is optional.
+for hw in /sys/class/hwmon/hwmon*; do
+    [[ -r $hw/name ]] || continue
+    case $(<"$hw/name") in
+        k10temp|coretemp|zenpower|acpitz)
+            for f in "$hw"/temp1_input "$hw"/temp2_input; do
+                [[ -r $f ]] && { milli=$(<"$f"); break 2; }
+            done
+            ;;
+    esac
+done
+[[ -z ${milli:-} ]] && exit 0
+
+c=$(( milli / 1000 ))
+col=$VALUE
+(( c >= 85 )) && col=$CRITICAL || { (( c >= 70 )) && col=$WARNING; }
+emit "$G_THERM" "$(printf '%3d°C' "$c")" "$col"

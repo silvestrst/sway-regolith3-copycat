@@ -1,0 +1,44 @@
+#!/bin/bash
+# Applies the "lascaille" look to GTK apps.
+# Stands in for Regolith's /usr/share/regolith-look/default_loader.sh, which
+# reads Xresources via trawlcat.  Values here are baked in instead.
+set -u
+
+GTK_THEME="Adwaita-dark"       # lascaille asks for Ayu-Mirage-Dark, not in the Ubuntu archive
+ICON_THEME="Papirus-Dark"
+FONT="Bitstream Vera Sans 11"
+DOC_FONT="Sans 11"
+MONO_FONT="Bitstream Vera Sans Mono 12"
+WALLPAPER="$HOME/.local/share/backgrounds/lascaille/desktop.jpg"
+LOCKSCREEN="$HOME/.local/share/backgrounds/lascaille/lockscreen.png"
+
+gsettings set org.gnome.desktop.interface gtk-theme        "$GTK_THEME"
+gsettings set org.gnome.desktop.interface icon-theme       "$ICON_THEME"
+gsettings set org.gnome.desktop.interface color-scheme     "prefer-dark"
+gsettings set org.gnome.desktop.interface font-name        "$FONT"
+gsettings set org.gnome.desktop.interface document-font-name "$DOC_FONT"
+gsettings set org.gnome.desktop.interface monospace-font-name "$MONO_FONT"
+gsettings set org.gnome.desktop.interface cursor-theme     "Adwaita"
+
+if [[ -f $WALLPAPER ]]; then
+    gsettings set org.gnome.desktop.background picture-uri      "file://$WALLPAPER"
+    gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER"
+    gsettings set org.gnome.desktop.background picture-options  "zoom"
+fi
+if [[ -f $LOCKSCREEN ]]; then
+    gsettings set org.gnome.desktop.screensaver picture-uri     "file://$LOCKSCREEN"
+    gsettings set org.gnome.desktop.screensaver picture-options "zoom"
+fi
+
+# GTK4/libadwaita apps read these from the settings.ini as well
+mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
+for d in gtk-3.0 gtk-4.0; do
+    cat > "$HOME/.config/$d/settings.ini" <<INI
+[Settings]
+gtk-theme-name=$GTK_THEME
+gtk-icon-theme-name=$ICON_THEME
+gtk-font-name=$FONT
+gtk-application-prefer-dark-theme=1
+gtk-cursor-theme-name=Adwaita
+INI
+done

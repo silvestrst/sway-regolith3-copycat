@@ -1,0 +1,4 @@
+# Disable the internal panel when the lid is closed (no-op on desktops)
+set $laptop_output eDP-1
+bindswitch --locked --reload lid:on  output $laptop_output disable
+bindswitch --locked --reload lid:off output $laptop_output enable

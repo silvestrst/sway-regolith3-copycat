@@ -1,0 +1,29 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+# Only internal batteries, not peripherals such as mice or headsets.
+for b in /sys/class/power_supply/BAT*; do
+    [[ -r $b/capacity ]] && { bat=$b; break; }
+done
+[[ -z ${bat:-} ]] && exit 0
+
+cap=$(<"$bat/capacity")
+status=$(<"$bat/status")
+
+case $status in
+    Charging) glyph=$G_CHARGING ;;
+    Full)     glyph=$G_AC ;;
+    *)
+        if   (( cap >= 90 )); then glyph=$G_BAT_FULL
+        elif (( cap >= 65 )); then glyph=$G_BAT_3
+        elif (( cap >= 40 )); then glyph=$G_BAT_2
+        elif (( cap >= 15 )); then glyph=$G_BAT_1
+        else                       glyph=$G_BAT_0
+        fi
+        ;;
+esac
+
+col=$VALUE
+[[ $status != Charging && $status != Full ]] && {
+    (( cap <= 10 )) && col=$CRITICAL || { (( cap <= 25 )) && col=$WARNING; }
+}
+emit "$glyph" "${cap}%" "$col"

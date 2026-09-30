@@ -1,0 +1,104 @@
+/* Regolith "lascaille" look (Ayu Mirage palette) for swaync. */
+@define-color base03  #1F2430;
+@define-color base02  #292B30;
+@define-color base01  #BFBAB0;
+@define-color base00  #CBCCC6;
+@define-color base0   #E6E1CF;
+@define-color orange  #FFA759;
+@define-color blue    #77A8D9;
+@define-color red     #FF3333;
+
+* {
+  font-family: "Bitstream Vera Sans", sans-serif;
+  font-size: 14px;
+}
+
+.notification-row { outline: none; }
+
+.notification {
+  background: @base03;
+  border: 1px solid @base01;
+  border-radius: 4px;
+  margin: 6px 8px;
+  padding: 0;
+}
+
+.notification-content {
+  background: transparent;
+  padding: 8px;
+  color: @base0;
+}
+
+.summary { color: @base0; font-weight: bold; }
+.body    { color: @base00; }
+.time    { color: @base01; font-size: 12px; }
+
+.critical { border-color: @red; }
+.low      { border-color: @base02; }
+
+.close-button {
+  background: transparent;
+  color: @base01;
+  border: none;
+  border-radius: 4px;
+}
+.close-button:hover {
+  background: @red;
+  color: #FFFFFF;
+}
+
+.notification-action, .notification-default-action {
+  background: transparent;
+  color: @base0;
+  border: none;
+}
+.notification-action:hover, .notification-default-action:hover {
+  background: @base02;
+}
+
+.control-center {
+  background: @base03;
+  border: 1px solid @base01;
+  color: @base0;
+}
+
+.control-center-list { background: transparent; }
+
+.widget-title {
+  color: @base0;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 12px;
+}
+.widget-title > button {
+  background: @base02;
+  color: @base0;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+}
+.widget-title > button:hover {
+  background: @orange;
+  color: @base03;
+}
+
+.widget-dnd {
+  color: @base0;
+  padding: 6px 12px;
+}
+.widget-dnd > switch {
+  background: @base02;
+  border-radius: 12px;
+}
+.widget-dnd > switch:checked {
+  background: @orange;
+}
+
+.widget-mpris {
+  background: @base02;
+  border-radius: 4px;
+  margin: 6px 8px;
+  color: @base0;
+}
+
+.blank-window { background: transparent; }

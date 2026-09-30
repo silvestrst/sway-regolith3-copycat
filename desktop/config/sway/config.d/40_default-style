@@ -1,0 +1,22 @@
+###############################################################################
+# Window appearance and behaviour
+###############################################################################
+floating_maximum_size -1 x -1
+for_window [app_id="floating_window"] floating enable
+
+default_floating_border pixel 1
+default_border pixel 2
+
+popup_during_fullscreen smart
+focus_follows_mouse no
+hide_edge_borders smart
+
+# Settings/control panel windows float, as in Regolith
+for_window [app_id="org.gnome.Settings"] floating enable
+for_window [app_id="gnome-control-center"] floating enable
+for_window [app_id="blueman-manager"] floating enable
+for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="nwg-displays"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="dialog"] floating enable
+for_window [window_type="dialog"] floating enable

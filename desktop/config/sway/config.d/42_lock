@@ -1,0 +1,13 @@
+###############################################################################
+# Lock screen and idle handling
+###############################################################################
+
+## Session // Lock Screen // <> Escape ##
+bindsym $mod+Escape exec --no-startup-id $bin/regolith-lock
+
+# Dim, lock, then blank the screens when idle; lock before sleeping.
+exec --no-startup-id swayidle -w \
+    timeout 300  "$HOME/.local/bin/regolith-lock" \
+    timeout 600  'swaymsg "output * power off"' \
+    resume       'swaymsg "output * power on"' \
+    before-sleep "$HOME/.local/bin/regolith-lock"

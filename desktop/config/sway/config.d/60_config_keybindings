@@ -1,0 +1,25 @@
+###############################################################################
+# System Settings
+###############################################################################
+
+## Modify // Settings // <> c ##
+bindsym $mod+c exec --no-startup-id $settings
+
+## Modify // Display Settings // <> d ##
+bindsym $mod+d exec --no-startup-id nwg-displays
+
+## Modify // Wifi Settings // <> w ##
+bindsym $mod+w exec --no-startup-id $settings wifi
+
+## Modify // Bluetooth Settings // <> b ##
+bindsym $mod+b exec --no-startup-id $settings bluetooth
+
+###############################################################################
+# Keyboard layout
+###############################################################################
+
+## Modify // Next Layout // <><Alt> BackSpace ##
+bindsym $mod+$alt+BackSpace input * xkb_switch_layout next
+
+## Modify // Prev Layout // <><Alt><Shift> BackSpace ##
+bindsym $mod+$alt+Shift+BackSpace input * xkb_switch_layout prev

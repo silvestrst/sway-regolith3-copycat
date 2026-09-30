@@ -1,0 +1,19 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+command -v swaync-client >/dev/null || exit 0
+case $BLOCK_BUTTON in
+    1) swaync-client --toggle-panel --skip-wait ;;
+    3) swaync-client --toggle-dnd --skip-wait ;;
+esac
+
+count=$(swaync-client --count 2>/dev/null)
+[[ $count =~ ^[0-9]+$ ]] || count=0
+dnd=$(swaync-client --get-dnd 2>/dev/null)
+
+if [[ $dnd == true ]]; then
+    emit "$G_BELL_OFF" "$count" "$WARNING"
+elif (( count > 0 )); then
+    emit "$G_BELL" "$count" "$LABEL"
+else
+    emit "$G_BELL" "$count"
+fi

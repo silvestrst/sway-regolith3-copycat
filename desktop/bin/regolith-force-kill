@@ -1,0 +1,4 @@
+#!/bin/bash
+# SIGKILL the process owning the focused window (Regolith's Mod+Alt+q).
+pid=$(swaymsg -t get_tree | jq -r '..|select(.focused? == true)|.pid' | head -1)
+[[ -n ${pid:-} && $pid != null ]] && kill -9 "$pid"

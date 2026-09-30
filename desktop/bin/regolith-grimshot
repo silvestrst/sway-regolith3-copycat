@@ -1,0 +1,65 @@
+#!/bin/bash
+# A stand-in for sway-contrib's `grimshot`, which is not packaged in Ubuntu.
+# Usage: regolith-grimshot [--notify] (copy|save|savecopy) (active|screen|output|area|window)
+set -euo pipefail
+
+NOTIFY=0
+[[ ${1:-} == "--notify" ]] && { NOTIFY=1; shift; }
+
+ACTION=${1:-savecopy}
+TARGET=${2:-area}
+
+DIR=$(xdg-user-dir PICTURES 2>/dev/null || echo "$HOME/Pictures")
+mkdir -p "$DIR"
+FILE="$DIR/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+
+notify() { [[ $NOTIFY == 1 ]] && notify-send -a Screenshot -i "$2" "$1" "${3:-}" || true; }
+
+geometry() {
+    case $TARGET in
+        active)
+            swaymsg -t get_tree | jq -r '.. | select(.type?) | select(.focused).rect
+                | "\(.x),\(.y) \(.width)x\(.height)"'
+            ;;
+        window)
+            swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?)
+                | "\(.rect.x),\(.rect.y) \(.rect.width)x\(.rect.height)"' | slurp -r
+            ;;
+        output)
+            swaymsg -t get_outputs | jq -r '.[] | select(.focused).rect
+                | "\(.x),\(.y) \(.width)x\(.height)"'
+            ;;
+        area)
+            slurp
+            ;;
+        screen)
+            echo ""   # empty means whole compositor output space
+            ;;
+    esac
+}
+
+GEOM=$(geometry) || { notify "Screenshot cancelled" dialog-information; exit 1; }
+[[ $TARGET != screen && -z $GEOM ]] && { notify "Screenshot cancelled" dialog-information; exit 1; }
+
+if [[ -n $GEOM ]]; then
+    grim -g "$GEOM" "$FILE"
+else
+    grim "$FILE"
+fi
+
+case $ACTION in
+    copy)
+        wl-copy --type image/png < "$FILE"
+        rm -f "$FILE"
+        notify "Screenshot copied to clipboard" edit-copy
+        ;;
+    save)
+        notify "Screenshot saved" "$FILE" "$FILE"
+        echo "$FILE"
+        ;;
+    savecopy)
+        wl-copy --type image/png < "$FILE"
+        notify "Screenshot saved and copied" "$FILE" "$FILE"
+        echo "$FILE"
+        ;;
+esac

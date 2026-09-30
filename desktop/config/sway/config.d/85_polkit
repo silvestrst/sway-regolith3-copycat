@@ -1,0 +1,2 @@
+# Authentication dialogs, as Regolith does with mate-polkit
+exec --no-startup-id $bin/regolith-polkit-agent

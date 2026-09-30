@@ -1,0 +1,43 @@
+# Shared colours and glyphs for the Regolith-style status bar.
+# Sourced by every block script.
+
+# Regolith "lascaille" colours (Ayu Mirage palette)
+LABEL="#E6E1CF"     # i3xrocks.label.color   -> color_base0
+VALUE="#CBCCC6"     # i3xrocks.value.color   -> color_base00
+CRITICAL="#FF3333"  # i3xrocks.critical.color
+ERROR="#FFA759"     # i3xrocks.error.color
+WARNING="#FFD580"   # i3xrocks.warning
+
+# Font Awesome 4.7 glyphs (package: fonts-font-awesome).
+# Regolith's lascaille look uses Nerd Font codepoints; no Nerd Font is packaged
+# in Ubuntu, so the visually equivalent Font Awesome glyphs are used instead.
+G_CLOCK=$''      # clock-o
+G_HELP=$''       # question-circle
+G_CPU=$''        # microchip
+G_MEM=$''        # database
+G_DISK=$''       # hdd-o
+G_THERM=$''      # thermometer-half
+G_WIFI=$''       # wifi
+G_WIRED=$''      # sitemap
+G_UP=$''         # arrow-up
+G_DOWN=$''       # arrow-down
+G_VOL=$''        # volume-up
+G_MUTE=$''       # volume-off
+G_PLAY=$''       # play
+G_PAUSE=$''      # pause
+G_BELL=$''       # bell
+G_BELL_OFF=$''   # bell-slash-o
+G_KEYBOARD=$''   # keyboard-o
+G_BAT_FULL=$''
+G_BAT_3=$''
+G_BAT_2=$''
+G_BAT_1=$''
+G_BAT_0=$''
+G_CHARGING=$''   # bolt
+G_AC=$''         # plug
+
+# emit <label-glyph> <value-text> [value-colour]
+emit() {
+    printf '<span color="%s">%s</span> <span color="%s">%s</span>\n' \
+        "$LABEL" "$1" "${3:-$VALUE}" "$2"
+}

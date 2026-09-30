@@ -1,0 +1,25 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+command -v playerctl >/dev/null || exit 0
+case $BLOCK_BUTTON in
+    1) playerctl play-pause ;;
+    4) playerctl next ;;
+    5) playerctl previous ;;
+esac
+
+status=$(playerctl status 2>/dev/null) || exit 0
+[[ -z $status ]] && exit 0
+
+case $status in
+    Playing) glyph=$G_PLAY ;;
+    Paused)  glyph=$G_PAUSE ;;
+    *) exit 0 ;;
+esac
+
+meta=$(playerctl metadata --format '{{artist}} - {{title}}' 2>/dev/null)
+meta=${meta# - }
+[[ -z $meta ]] && exit 0
+
+# i3xrocks.value.mediaplayerwidth: 25
+(( ${#meta} > 25 )) && meta="${meta:0:24}…"
+emit "$glyph" "$(sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' <<< "$meta")"

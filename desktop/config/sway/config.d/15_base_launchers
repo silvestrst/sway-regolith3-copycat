@@ -1,0 +1,12 @@
+###############################################################################
+# Launcher dialogs
+###############################################################################
+
+## Launch // Terminal // <> Enter ##
+bindsym $mod+Return exec --no-startup-id systemd-run --user --scope $term
+
+## Launch // Browser // <><Shift> Enter ##
+bindsym $mod+Shift+Return exec --no-startup-id systemd-run --user --scope gtk-launch $(xdg-settings get default-web-browser)
+
+## Launch // File Browser // <><Shift> n ##
+bindsym $mod+Shift+n exec --no-startup-id $files

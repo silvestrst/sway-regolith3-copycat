@@ -1,0 +1,15 @@
+###############################################################################
+# Screenshots
+###############################################################################
+
+## Session // Window Snapshot // <> Prtscr ##
+bindsym $mod+Print exec --no-startup-id $bin/regolith-grimshot copy active
+
+## Session // Screenshot // <><Shift> Prtscr ##
+bindsym $mod+Shift+Print exec --no-startup-id $bin/regolith-grimshot --notify savecopy area
+
+## Session // Capture All Screens // <><Shift><Ctrl> Prtscr ##
+bindsym $mod+Shift+Ctrl+Print exec --no-startup-id $bin/regolith-grimshot --notify save screen
+
+# Bare Print key also grabs a region, which most people expect
+bindsym Print exec --no-startup-id $bin/regolith-grimshot --notify savecopy area

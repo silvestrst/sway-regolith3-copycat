@@ -1,0 +1,15 @@
+###############################################################################
+# Gaps
+###############################################################################
+
+## Resize // Window Gaps // <> + - ##
+bindsym --to-code $mod+minus gaps inner current minus 6
+bindsym --to-code $mod+plus  gaps inner current plus 6
+
+## Resize // Big Window Gaps // <><Shift> + - ##
+bindsym --to-code $mod+Shift+minus gaps inner current minus 12
+bindsym --to-code $mod+Shift+plus  gaps inner current plus 12
+
+gaps inner 5
+gaps outer 0
+smart_gaps on

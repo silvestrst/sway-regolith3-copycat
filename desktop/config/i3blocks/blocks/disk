@@ -1,0 +1,11 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+MOUNT=${DISK_MOUNT:-/}
+[[ $BLOCK_BUTTON == 1 ]] && { setsid nautilus "$MOUNT" >/dev/null 2>&1 & }
+
+read -r _ _ _ avail pct _ < <(df -h --output=source,size,used,avail,pcent,target "$MOUNT" | tail -1)
+num=${pct%\%}
+
+col=$VALUE
+(( num >= 95 )) && col=$CRITICAL || { (( num >= 85 )) && col=$WARNING; }
+emit "$G_DISK" "$avail" "$col"

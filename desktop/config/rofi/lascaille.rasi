@@ -1,0 +1,112 @@
+/* Regolith "lascaille" look (Ayu Mirage palette) for rofi. */
+* {
+    base03:     #1F2430;
+    base02:     #292B30;
+    base01:     #BFBAB0;
+    base00:     #CBCCC6;
+    base0:      #E6E1CF;
+    white:      #FFFFFF;
+    orange:     #FFA759;
+    blue:       #77A8D9;
+    red:        #FF3333;
+
+    background-color: transparent;
+    text-color:       @base0;
+}
+
+window {
+    location:         center;
+    width:            680px;
+    border:           1px;
+    border-color:     @base01;
+    border-radius:    4px;
+    background-color: @base03;
+    padding:          0;
+}
+
+mainbox {
+    children: [ inputbar, mode-switcher, listview ];
+    spacing:  0;
+    padding:  2px;
+}
+
+inputbar {
+    background-color: @base02;
+    padding:          10px 12px;
+    spacing:          10px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    text-color: @orange;
+    vertical-align: 0.5;
+}
+
+entry {
+    placeholder:       "Search";
+    placeholder-color: @base01;
+    vertical-align:    0.5;
+}
+
+listview {
+    lines:        12;
+    columns:      1;
+    scrollbar:    true;
+    fixed-height: false;
+    padding:      6px 0;
+    spacing:      0;
+}
+
+scrollbar {
+    handle-color: @base01;
+    handle-width: 4px;
+}
+
+element {
+    padding: 7px 12px;
+    spacing: 10px;
+}
+
+element normal normal  { text-color: @base0; }
+element normal urgent  { text-color: @red; }
+element normal active  { text-color: @blue; }
+
+element selected normal,
+element selected active {
+    background-color: @orange;
+    text-color:       @base03;
+}
+element selected urgent {
+    background-color: @red;
+    text-color:       @white;
+}
+
+element-icon {
+    size:           24px;
+    vertical-align: 0.5;
+}
+
+element-text {
+    vertical-align: 0.5;
+    text-color:     inherit;
+}
+
+mode-switcher {
+    background-color: @base02;
+    padding:          0;
+}
+
+button {
+    padding:    6px;
+    text-color: @base01;
+}
+
+button selected {
+    text-color:       @base03;
+    background-color: @orange;
+}
+
+message {
+    padding:          8px;
+    background-color: @base02;
+}

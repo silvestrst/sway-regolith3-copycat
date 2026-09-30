@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+"""Focus the previously focused window on SIGUSR1.
+
+A stand-in for Regolith's `i3-swap-focus`.  Writes its pid to
+$XDG_RUNTIME_DIR/swap_focus.pid so the keybinding can signal it.
+"""
+import os
+import signal
+import sys
+
+try:
+    from i3ipc import Connection, Event
+except ImportError:
+    sys.exit("python3-i3ipc is not installed")
+
+prev = None
+current = None
+
+
+def on_focus(_conn, event):
+    global prev, current
+    con_id = event.container.id
+    if con_id != current:
+        prev, current = current, con_id
+
+
+def main():
+    runtime = os.environ.get("XDG_RUNTIME_DIR", "/tmp")
+    pidfile = os.path.join(runtime, "swap_focus.pid")
+    with open(pidfile, "w") as fh:
+        fh.write(str(os.getpid()))
+
+    conn = Connection()
+
+    def swap(_signum, _frame):
+        if prev is not None:
+            conn.command(f"[con_id={prev}] focus")
+
+    signal.signal(signal.SIGUSR1, swap)
+    conn.on(Event.WINDOW_FOCUS, on_focus)
+    try:
+        conn.main()
+    finally:
+        try:
+            os.unlink(pidfile)
+        except OSError:
+            pass
+
+
+if __name__ == "__main__":
+    main()

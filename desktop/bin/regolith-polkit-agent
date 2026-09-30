@@ -1,0 +1,9 @@
+#!/bin/bash
+# Start the MATE polkit authentication agent, whichever path it is installed at.
+for p in /usr/libexec/polkit-mate-authentication-agent-1 \
+         /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 \
+         /usr/lib/x86_64-linux-gnu/mate-polkit/polkit-mate-authentication-agent-1; do
+    [[ -x $p ]] && exec "$p"
+done
+echo "mate-polkit agent not found" >&2
+exit 1

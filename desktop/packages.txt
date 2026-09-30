@@ -1,0 +1,76 @@
+# Packages for the sway / Regolith 3 copycat desktop on Ubuntu 26.04.
+# One package per line. Blank lines and lines starting with "#" are ignored.
+# Everything here comes from the standard Ubuntu archive (main/universe).
+
+# Compositor and session
+sway
+swaybg
+swayidle
+swaylock
+xwayland
+
+# Terminal, launcher, status bar
+foot
+rofi
+i3blocks
+
+# Notifications and on-screen display
+sway-notification-center
+swayosd
+
+# Screenshots and clipboard
+grim
+slurp
+swappy
+wl-clipboard
+
+# Display management
+kanshi
+nwg-displays
+
+# Desktop portals (screen sharing, file pickers)
+xdg-desktop-portal
+xdg-desktop-portal-wlr
+xdg-desktop-portal-gtk
+
+# Audio, brightness, media keys
+wireplumber
+pulseaudio-utils
+pavucontrol
+playerctl
+brightnessctl
+
+# Network and Bluetooth tray applets
+# (network-manager-gnome is now a transitional package for the next two)
+network-manager
+network-manager-applet
+nm-connection-editor
+blueman
+
+# Authentication agent and keyring
+mate-polkit
+gnome-keyring
+
+# Theme, icons, fonts
+gnome-themes-extra
+papirus-icon-theme
+fonts-font-awesome
+ttf-bitstream-vera
+
+# Tools the config and helper scripts call
+jq
+libnotify-bin
+libglib2.0-bin
+dbus-bin
+python3
+python3-i3ipc
+xdg-user-dirs
+xdg-utils
+libgtk-3-bin
+im-config
+gnome-control-center
+nautilus
+lm-sensors
+
+# Optional: the clock block opens this on click, and does nothing if it is absent
+#gnome-calendar

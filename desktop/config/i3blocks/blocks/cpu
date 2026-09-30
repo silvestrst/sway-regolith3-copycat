@@ -1,0 +1,19 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+[[ $BLOCK_BUTTON == 1 ]] && { setsid "${TERMINAL:-foot}" -e top >/dev/null 2>&1 & }
+
+state="${XDG_RUNTIME_DIR:-/tmp}/i3blocks-cpu"
+read -r _ u n s i rest < /proc/stat
+total=$((u+n+s+i)); idle=$i
+if [[ -r $state ]]; then
+    read -r ptotal pidle < "$state"
+    dt=$((total-ptotal)); di=$((idle-pidle))
+    (( dt > 0 )) && pct=$(( (100*(dt-di)) / dt )) || pct=0
+else
+    pct=0
+fi
+echo "$total $idle" > "$state"
+
+col=$VALUE
+(( pct >= 90 )) && col=$CRITICAL || { (( pct >= 70 )) && col=$WARNING; }
+emit "$G_CPU" "$(printf '%3d%%' "$pct")" "$col"

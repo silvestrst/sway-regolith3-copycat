@@ -1,0 +1,15 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+[[ $BLOCK_BUTTON == 1 ]] && swaymsg 'input * xkb_switch_layout next' >/dev/null 2>&1
+
+layout=$(swaymsg -t get_inputs 2>/dev/null \
+    | jq -r 'map(select(.type=="keyboard" and .xkb_active_layout_name))
+             | .[0].xkb_active_layout_name // empty')
+[[ -z ${layout:-} ]] && exit 0
+
+# Only show the indicator when more than one layout is configured
+count=$(swaymsg -t get_inputs 2>/dev/null \
+    | jq -r 'map(select(.type=="keyboard" and .xkb_layout_names)) | .[0].xkb_layout_names | length // 1')
+[[ ${count:-1} -le 1 ]] && exit 0
+
+emit "$G_KEYBOARD" "${layout:0:2}"

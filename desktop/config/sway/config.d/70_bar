@@ -1,0 +1,28 @@
+###############################################################################
+# Status bar - swaybar driving i3blocks (Regolith uses swaybar + i3status-rs)
+###############################################################################
+
+## Modify // Toggle Bar // <> i ##
+bindsym $mod+i bar mode toggle
+
+bar {
+    position bottom
+    mode dock
+    font pango:$bar_font
+    separator_symbol " "
+    status_command i3blocks -c $HOME/.config/i3blocks/config
+    strip_workspace_numbers yes
+    workspace_min_width 36
+
+    colors {
+        background $color_base03
+        statusline $color_base0
+        separator  $color_blue
+
+        #                  BORDER           BACKGROUND       TEXT
+        focused_workspace  $color_orange    $color_orange    $color_base03
+        active_workspace   $color_ltyellow  $color_ltyellow  $color_base03
+        inactive_workspace $color_base01    $color_base01    $color_base02
+        urgent_workspace   $color_red       $color_red       $color_base3
+    }
+}

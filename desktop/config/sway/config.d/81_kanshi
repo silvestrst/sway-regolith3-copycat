@@ -1,0 +1,2 @@
+# Display profile daemon - applies ~/.config/kanshi/config on start and hotplug
+exec_always --no-startup-id "pkill -x kanshi; exec kanshi"

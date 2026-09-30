@@ -1,0 +1,16 @@
+###############################################################################
+# Output (monitor) layout
+#
+# Sway places monitors left to right in the order it detects them, at their
+# preferred mode, so nothing needs to be set here for a single monitor or when
+# that order happens to be right. To pin a layout, match each monitor on its
+# EDID "Make Model Serial" string (see `swaymsg -t get_outputs`) so it keeps
+# its place whichever port it is plugged into, or on the connector name
+# (DP-1, HDMI-A-1, eDP-1, ...). `nwg-displays` (Super+d) can write this for you.
+#
+# output "Vendor Model Serial" mode 1920x1080@60Hz position 0 0 scale 1
+# output "Vendor Model Serial" mode 1920x1080@60Hz position 1920 0 scale 1
+###############################################################################
+
+# Wallpaper for every output
+output * bg $HOME/.local/share/backgrounds/lascaille/desktop.jpg fill

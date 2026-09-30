@@ -1,0 +1,20 @@
+/* Rofi configured to behave like Regolith's "ilia" launcher. */
+configuration {
+    modes:                       "drun,run,window,filebrowser";
+    font:                        "Bitstream Vera Sans 11";
+    show-icons:                  true;
+    icon-theme:                  "Papirus-Dark";
+    terminal:                    "foot";
+    drun-display-format:         "{name}";
+    window-format:               "{w}  {c}  {t}";
+    display-drun:                "Applications";
+    display-run:                 "Command";
+    display-window:              "Windows";
+    display-filebrowser:         "Files";
+    sidebar-mode:                true;
+    kb-cancel:                   "Escape,Super+space";
+    matching:                    "fuzzy";
+    sort:                        true;
+}
+
+@theme "~/.config/rofi/lascaille.rasi"

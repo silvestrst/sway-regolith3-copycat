@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+"""Keybinding viewer - a stand-in for Regolith's remontoire / `ilia -p keybindings`.
+
+Parses the machine-readable comment schema Regolith uses in its wm configs:
+
+    ## <Category> // <Action> // <Keybinding> ##
+
+and renders the result through rofi.
+"""
+import glob
+import os
+import re
+import subprocess
+import sys
+from html import escape
+
+CONFIG_GLOBS = [
+    os.path.expanduser("~/.config/sway/config.d/*"),
+    os.path.expanduser("~/.config/sway/config"),
+]
+
+ENTRY = re.compile(r"^\s*##\s*(.+?)\s*//\s*(.+?)\s*//\s*(.+?)\s*##")
+
+# How the <> tokens in the schema render as human-readable key names.
+TOKENS = {
+    "": "Super",          # a bare <> means the mod key
+    "shift": "Shift",
+    "ctrl": "Ctrl",
+    "control": "Ctrl",
+    "alt": "Alt",
+    "prtscr": "PrtSc",
+    "print": "PrtSc",
+}
+
+# Category ordering and colour, mirroring Regolith's grouping.
+CATEGORY_COLOR = {
+    "Launch":   "#BAE67E",
+    "Navigate": "#77A8D9",
+    "Modify":   "#FFD580",
+    "Resize":   "#D4BFFF",
+    "Session":  "#FFA759",
+}
+CATEGORY_ORDER = ["Launch", "Navigate", "Modify", "Resize", "Session"]
+
+
+def render_keys(raw: str) -> str:
+    """Turn '<><Ctrl> 1..9' into 'Super + Ctrl + 1..9'."""
+    parts = []
+    for tok in re.findall(r"<([^>]*)>", raw):
+        parts.append(TOKENS.get(tok.strip().lower(), tok.strip()))
+    remainder = re.sub(r"<[^>]*>", " ", raw).strip()
+    for word in remainder.split():
+        parts.append(TOKENS.get(word.lower(), word))
+    return " + ".join(p for p in parts if p)
+
+
+def collect():
+    seen = set()
+    entries = []
+    files = []
+    for pattern in CONFIG_GLOBS:
+        files.extend(sorted(glob.glob(pattern)))
+    for path in files:
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding="utf-8", errors="replace") as fh:
+                lines = fh.readlines()
+        except OSError:
+            continue
+        for line in lines:
+            m = ENTRY.match(line)
+            if not m:
+                continue
+            category, action, keys = (g.strip() for g in m.groups())
+            keys = render_keys(keys)
+            dedup = (category, action, keys)
+            if dedup in seen:
+                continue
+            seen.add(dedup)
+            entries.append(dedup)
+    return entries
+
+
+def main():
+    entries = collect()
+    if not entries:
+        sys.exit("No keybinding annotations found in ~/.config/sway")
+
+    def sort_key(e):
+        cat = e[0]
+        rank = CATEGORY_ORDER.index(cat) if cat in CATEGORY_ORDER else len(CATEGORY_ORDER)
+        return (rank, cat, e[1])
+
+    entries.sort(key=sort_key)
+
+    act_width = max(len(e[1]) for e in entries)
+    lines = []
+    for category, action, keys in entries:
+        color = CATEGORY_COLOR.get(category, "#CBCCC6")
+        lines.append(
+            f"<span foreground='{color}'>{escape(category):<9}</span>"
+            f"  {escape(action):<{act_width}}   "
+            f"<span foreground='#E6E1CF'><b>{escape(keys)}</b></span>"
+        )
+
+    rofi = [
+        "rofi", "-dmenu", "-markup-rows", "-i",
+        "-p", "Keybindings",
+        "-no-custom",
+        "-theme-str", "window { width: 60%; } listview { lines: 20; }",
+    ]
+    try:
+        subprocess.run(rofi, input="\n".join(lines), text=True, check=False)
+    except FileNotFoundError:
+        sys.exit("rofi is not installed")
+
+
+if __name__ == "__main__":
+    main()

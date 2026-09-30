@@ -1,0 +1,30 @@
+###############################################################################
+# Session Management
+###############################################################################
+
+## Session // Exit App // <><Shift> q ##
+bindsym $mod+Shift+q [con_id="__focused__"] kill
+
+## Session // Terminate App // <><Alt> q ##
+bindsym $mod+$alt+q exec --no-startup-id $bin/regolith-force-kill
+
+## Session // Reload Sway Config // <><Shift> c ##
+bindsym $mod+Shift+c reload
+
+## Session // Refresh Session // <><Shift> r ##
+bindsym $mod+Shift+r exec --no-startup-id $bin/regolith-apply-look && swaymsg reload
+
+## Session // Logout // <><Shift> e ##
+bindsym $mod+Shift+e exec --no-startup-id swaynag -t warning \
+    -m 'Do you really want to log out?' -B 'Log out' 'swaymsg exit'
+
+## Session // Reboot // <><Shift> b ##
+bindsym $mod+Shift+b exec --no-startup-id swaynag -t warning \
+    -m 'Do you really want to reboot your system?' -B 'Reboot' 'systemctl reboot'
+
+## Session // Power Down // <><Shift> p ##
+bindsym $mod+Shift+p exec --no-startup-id swaynag -t warning \
+    -m 'Do you really want to shut down?' -B 'Shut down' 'systemctl poweroff'
+
+## Session // Sleep // <><Shift> s ##
+bindsym --locked $mod+Shift+s exec --no-startup-id systemctl suspend

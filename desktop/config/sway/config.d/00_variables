@@ -1,0 +1,58 @@
+###############################################################################
+# Meta keys
+###############################################################################
+set $mod Mod4
+set $alt Mod1
+
+###############################################################################
+# Colours - Regolith "lascaille" look (Ayu Mirage palette)
+###############################################################################
+set $color_base03   #1F2430
+set $color_base02   #292B30
+set $color_base01   #BFBAB0
+set $color_base00   #CBCCC6
+set $color_base0    #E6E1CF
+set $color_base3    #FFFFFF
+set $color_yellow   #FFD580
+set $color_orange   #FFA759
+set $color_red      #FF3333
+set $color_magenta  #D4BFFF
+set $color_violet   #B48EAD
+set $color_blue     #77A8D9
+set $color_cyan     #95E6CB
+set $color_green    #BAE67E
+set $color_brown    #F29E74
+set $color_ltblue   #73D0FF
+set $color_ltgreen  #A6CC70
+set $color_ltyellow #FFE6B3
+set $color_ltcyan   #5CCFE6
+
+###############################################################################
+# Fonts
+###############################################################################
+# Regolith lascaille uses "Bitstream Vera Sans 11" for window decorations and
+# "BitstreamVeraSansMono Nerd Font 12" for the bar.  No Nerd Font exists in the
+# Ubuntu archive, so the bar font falls back to Font Awesome for its glyphs.
+set $wm_font    Bitstream Vera Sans 11
+set $bar_font   Bitstream Vera Sans Mono, FontAwesome 12
+
+font pango:$wm_font
+
+###############################################################################
+# Window colours
+#           border          background       text            indicator       child_border
+###############################################################################
+client.focused          $color_base03 $color_base01 $color_base3 $color_blue   $color_base01
+client.focused_inactive $color_base03 $color_base02 $color_base0 $color_base02 $color_base03
+client.unfocused        $color_base03 $color_base02 $color_base0 $color_base02 $color_base03
+client.urgent           $color_base03 $color_red    $color_base3 $color_red    $color_base03
+
+###############################################################################
+# Programs
+###############################################################################
+set $term       foot
+set $files      nautilus --new-window
+# gnome-control-center needs to believe it is in a GNOME session
+set $settings   env XDG_CURRENT_DESKTOP=GNOME gnome-control-center
+
+set $bin        $HOME/.local/bin

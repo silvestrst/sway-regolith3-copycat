@@ -1,0 +1,18 @@
+# Display profiles, applied by kanshi on start and whenever a monitor is
+# plugged in or removed. A profile lists a set of monitors and is applied when
+# exactly that set is connected, which is what makes docking and undocking a
+# laptop work without touching the sway config.
+#
+# Match monitors on their EDID "Make Model Serial" string (see
+# `swaymsg -t get_outputs`) so each panel keeps its place whichever port it is
+# on, or on the connector name (DP-1, HDMI-A-1, eDP-1, ...). `nwg-displays`
+# (Super+d) can write these for you. With no profiles kanshi simply idles.
+#
+# profile docked {
+#	output "Vendor Model Serial" mode 1920x1080@60Hz position 0,0 scale 1 enable
+#	output "Vendor Model Serial" mode 1920x1080@60Hz position 1920,0 scale 1 enable
+# }
+#
+# profile undocked {
+#	output eDP-1 enable
+# }

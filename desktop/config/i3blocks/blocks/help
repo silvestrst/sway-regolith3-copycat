@@ -1,0 +1,4 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+[[ $BLOCK_BUTTON == 1 ]] && { setsid "$HOME/.local/bin/regolith-keybindings" >/dev/null 2>&1 & }
+printf '<span color="%s">%s</span>\n' "$LABEL" "$G_HELP"

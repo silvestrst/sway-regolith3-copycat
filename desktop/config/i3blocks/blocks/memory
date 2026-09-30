@@ -1,0 +1,18 @@
+#!/bin/bash
+source "$(dirname "$0")/_common"
+[[ $BLOCK_BUTTON == 1 ]] && { setsid "${TERMINAL:-foot}" -e top -o '%MEM' >/dev/null 2>&1 & }
+
+while read -r key val _; do
+    case $key in
+        MemTotal:)     total=$val ;;
+        MemAvailable:) avail=$val ;;
+    esac
+done < /proc/meminfo
+
+used=$(( total - avail ))
+pct=$(( 100 * used / total ))
+gib=$(awk -v k="$used" 'BEGIN{printf "%4.1f", k/1048576}')
+
+col=$VALUE
+(( pct >= 90 )) && col=$CRITICAL || { (( pct >= 75 )) && col=$WARNING; }
+emit "$G_MEM" "${gib}G" "$col"

@@ -1,0 +1,10 @@
+###############################################################################
+# Sway config replicating the Regolith Desktop 3 (Sway session) experience
+# using only packages available in the Ubuntu 26.04 archive.
+#
+# This file uses the machine-parsable comment schema Regolith/remontoire use:
+#   ## <Category> // <Action> // <Keybinding> ##
+# The keybinding viewer (Mod+Shift+?) parses these.
+###############################################################################
+
+include $HOME/.config/sway/config.d/*

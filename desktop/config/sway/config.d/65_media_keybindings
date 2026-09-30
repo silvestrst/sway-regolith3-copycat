@@ -1,0 +1,28 @@
+###############################################################################
+# Media keys - swayosd provides the on-screen overlay (Regolith uses avizo)
+###############################################################################
+exec --no-startup-id "command -v swayosd-server >/dev/null && exec swayosd-server || exec /usr/libexec/swayosd-server"
+
+# Volume
+bindsym --locked XF86AudioRaiseVolume exec swayosd-client --output-volume raise
+bindsym --locked XF86AudioLowerVolume exec swayosd-client --output-volume lower
+bindsym --locked XF86AudioMute        exec swayosd-client --output-volume mute-toggle
+bindsym --locked XF86AudioMicMute     exec swayosd-client --input-volume mute-toggle
+
+# Brightness
+bindsym --locked XF86MonBrightnessUp   exec swayosd-client --brightness raise
+bindsym --locked XF86MonBrightnessDown exec swayosd-client --brightness lower
+
+# Caps/Num lock overlay
+bindsym --locked --release Caps_Lock exec swayosd-client --caps-lock
+bindsym --locked --release Num_Lock  exec swayosd-client --num-lock
+
+# Player controls. Keycodes 172 and 208 are both XF86AudioPlay but differ in meaning.
+bindcode --locked 172 exec playerctl play-pause
+bindcode --locked 208 exec playerctl play
+bindsym --locked XF86AudioPause exec playerctl pause
+bindsym --locked XF86AudioPlay  exec playerctl play-pause
+bindsym --locked XF86AudioNext  exec playerctl next
+bindsym --locked XF86AudioPrev  exec playerctl previous
+
+exec --no-startup-id playerctld daemon

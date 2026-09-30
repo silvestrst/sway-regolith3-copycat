@@ -1,0 +1,20 @@
+###############################################################################
+# Session / D-Bus environment
+###############################################################################
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+
+# Screen sharing / file pickers
+exec systemctl --user start xdg-desktop-portal.service
+
+# Secrets (ssh/gpg/network passwords)
+exec /usr/bin/gnome-keyring-daemon --start --components=secrets,ssh
+
+# No input method by default, matching Regolith
+exec_always im-config -n none
+
+###############################################################################
+# GTK / interface settings - the equivalent of Regolith's look loader
+###############################################################################
+exec_always $HOME/.local/bin/regolith-apply-look

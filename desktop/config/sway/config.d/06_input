@@ -1,0 +1,12 @@
+###############################################################################
+# Input (keyboard) layout
+#
+# Matches the system-wide X11 layout reported by `localectl status` (gb).
+# Sway otherwise falls back to the "us" default regardless of localectl.
+# Use `swaymsg -t get_inputs` to list devices and see the active layout.
+###############################################################################
+
+input type:keyboard {
+    xkb_layout gb
+    xkb_model pc105
+}
